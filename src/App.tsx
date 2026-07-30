@@ -7,6 +7,7 @@ import { ToastHost } from '@/components/ui/Toast';
 import { UserLayout } from '@/components/layout/UserLayout';
 import { AdminLayout } from '@/components/layout/AdminLayout';
 
+import { LandingPage } from '@/pages/user/LandingPage';
 import { DashboardPage } from '@/pages/user/DashboardPage';
 import { ScreeningPage } from '@/pages/user/ScreeningPage';
 import { EducationPage } from '@/pages/user/EducationPage';
@@ -60,7 +61,8 @@ export default function App() {
             <ToastHost />
             <Routes>
               {/* User routes */}
-              <Route path="/" element={<UserRoute><DashboardPage /></UserRoute>} />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/dashboard" element={<UserRoute><RequireUser><DashboardPage /></RequireUser></UserRoute>} />
               <Route path="/skrining" element={<UserRoute><ScreeningPage /></UserRoute>} />
               <Route path="/edukasi" element={<UserRoute><EducationPage /></UserRoute>} />
               <Route path="/video" element={<UserRoute><VideoGalleryPage /></UserRoute>} />

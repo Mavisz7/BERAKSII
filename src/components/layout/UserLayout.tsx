@@ -9,7 +9,7 @@ import { useUser } from '@/contexts/UserContext';
 import { useSettings } from '@/hooks/useSettings';
 
 const userNav = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/skrining', label: 'Skrining Hipertensi', icon: ClipboardCheck },
   { to: '/edukasi', label: 'Edukasi', icon: BookOpen },
   { to: '/video', label: 'Galeri Video Edukasi', icon: Video },
@@ -43,7 +43,7 @@ export function UserLayout({ children }: { children: ReactNode }) {
   const sidebar = (
     <div className="flex flex-col h-full">
       {/* Logo / brand */}
-      <Link to="/" className="flex items-center gap-3 px-5 py-6">
+      <Link to="/dashboard" className="flex items-center gap-3 px-5 py-6">
         <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center shadow-lg shadow-brand-500/30 shrink-0">
           <HeartPulse className="w-6 h-6 text-white" strokeWidth={2.5} />
         </div>

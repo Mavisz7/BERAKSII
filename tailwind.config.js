@@ -131,6 +131,42 @@ export default {
           '0%': { opacity: '0', transform: 'scale(0.8)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
+        'float': {
+          '0%,100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'heartbeat': {
+          '0%,100%': { transform: 'scale(1)' },
+          '15%': { transform: 'scale(1.15)' },
+          '30%': { transform: 'scale(1)' },
+          '45%': { transform: 'scale(1.12)' },
+          '60%': { transform: 'scale(1)' },
+        },
+        'slide-in-right': {
+          '0%': { opacity: '0', transform: 'translateX(100%)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'slide-out-right': {
+          '0%': { opacity: '1', transform: 'translateX(0)' },
+          '100%': { opacity: '0', transform: 'translateX(100%)' },
+        },
+        'pop': {
+          '0%': { opacity: '0', transform: 'scale(0.5)' },
+          '60%': { opacity: '1', transform: 'scale(1.1)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'draw-line': {
+          '0%': { strokeDashoffset: '1000' },
+          '100%': { strokeDashoffset: '0' },
+        },
+        'fade-out': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+        'progress-fill': {
+          '0%': { width: '0%' },
+          '100%': { width: '100%' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.4s ease-out',
@@ -141,6 +177,14 @@ export default {
         'card-lift': 'card-lift 0.25s ease-out',
         shimmer: 'shimmer 1.6s infinite linear',
         'count-up': 'count-up 0.5s ease-out',
+        'float': 'float 4s ease-in-out infinite',
+        'heartbeat': 'heartbeat 1.5s ease-in-out infinite',
+        'slide-in-right': 'slide-in-right 0.3s ease-out',
+        'slide-out-right': 'slide-out-right 0.3s ease-in forwards',
+        'pop': 'pop 0.4s cubic-bezier(0.34,1.56,0.64,1) ease-out',
+        'draw-line': 'draw-line 1.5s ease-out forwards',
+        'fade-out': 'fade-out 0.5s ease-out forwards',
+        'progress-fill': 'progress-fill 1.5s ease-out forwards',
       },
     },
   },

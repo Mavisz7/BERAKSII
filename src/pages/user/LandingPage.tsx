@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   HeartPulse, ClipboardCheck, Video, Activity, Brain, LayoutDashboard,
@@ -10,6 +10,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useSettings } from '@/hooks/useSettings';
 import { useVideos } from '@/hooks/useVideos';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { Reveal, useCountUp } from '@/components/ui/Reveal';
 
 const advantages = [
   { icon: ClipboardCheck, title: 'Skrining Hipertensi', desc: 'Deteksi dini risiko hipertensi secara mandiri.', color: 'from-brand-500 to-brand-600' },
@@ -47,31 +48,6 @@ const faqs = [
   { q: 'Apakah data saya aman?', a: 'Data Anda disimpan dengan aman dan hanya digunakan untuk keperluan edukasi dan pemantauan kesehatan oleh tenaga kesehatan Puskesmas Ambacang.' },
   { q: 'Bagaimana cara melakukan skrining?', a: 'Buka menu Skrining Hipertensi, jawab beberapa pertanyaan singkat tentang kondisi kesehatan Anda, dan sistem akan menampilkan tingkat risiko hipertensi Anda.' },
 ];
-
-function useCountUp(target: number, duration = 1500) {
-  const [val, setVal] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const started = useRef(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !started.current) {
-        started.current = true;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const p = Math.min((now - start) / duration, 1);
-          setVal(Math.round(target * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }
-    }, { threshold: 0.3 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target, duration]);
-  return { val, ref };
-}
 
 function Stat({ icon: Icon, value, label, color }: { icon: typeof Users; value: number; label: string; color: string }) {
   const { val, ref } = useCountUp(value);
@@ -207,21 +183,21 @@ export function LandingPage() {
       {/* KEUNGGULAN */}
       <section id="keunggulan" className="py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 animate-slide-up">
+          <Reveal className="text-center mb-12">
             <h2 className="text-3xl font-extrabold mb-3">Mengapa Memilih BERAKSIKU?</h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">Solusi digital terpadu untuk pengendalian hipertensi yang mudah, edukatif, dan terukur.</p>
-          </div>
+          </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {advantages.map((a, i) => {
               const Icon = a.icon;
               return (
-                <div key={i} className="card p-6 card-hover group animate-slide-up" style={{ animationDelay: `${i * 80}ms` }}>
+                <Reveal key={i} delay={i * 80} className="card p-6 card-hover group">
                   <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${a.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="font-bold text-lg mb-1">{a.title}</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400">{a.desc}</p>
-                </div>
+                </Reveal>
               );
             })}
           </div>
@@ -231,22 +207,22 @@ export function LandingPage() {
       {/* FITUR UTAMA */}
       <section id="fitur" className="py-20 px-4 sm:px-6 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 animate-slide-up">
+          <Reveal className="text-center mb-12">
             <h2 className="text-3xl font-extrabold mb-3">Fitur Utama</h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">Seluruh fitur BERAKSIKU dalam satu platform yang terintegrasi.</p>
-          </div>
+          </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             {features.map((f, i) => {
               const Icon = f.icon;
               return (
-                <Link key={i} to={f.to} className="card p-5 card-hover group animate-slide-up" style={{ animationDelay: `${i * 50}ms` }}>
+                <Reveal key={i} delay={i * 50} className="card p-5 card-hover group">
                   <div className="w-11 h-11 rounded-xl bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-3 group-hover:bg-brand-500 group-hover:text-white transition-all duration-300">
                     <Icon className="w-6 h-6" />
                   </div>
                   <h3 className="font-bold text-sm mb-1">{f.title}</h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">{f.desc}</p>
                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2 transition-all">Pelajari <ArrowRight className="w-3 h-3" /></span>
-                </Link>
+                </Reveal>
               );
             })}
           </div>
@@ -256,14 +232,14 @@ export function LandingPage() {
       {/* CERDIK */}
       <section id="cerdik" className="py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 animate-slide-up">
+          <Reveal className="text-center mb-12">
             <span className="badge bg-accent-100 text-accent-700 dark:bg-accent-500/15 dark:text-accent-300 mb-3">Pola Hidup Sehat</span>
             <h2 className="text-3xl font-extrabold mb-3">Program CERDIK</h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">Enam langkah sederhana untuk mencegah dan mengendalikan hipertensi.</p>
-          </div>
+          </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {cerdik.map((c, i) => (
-              <div key={i} className="card p-6 card-hover group animate-slide-up" style={{ animationDelay: `${i * 70}ms` }}>
+              <Reveal key={i} delay={i * 70} className="card p-6 card-hover group">
                 <div className="flex items-start gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center text-2xl font-extrabold text-white shadow-lg shrink-0 group-hover:scale-110 transition-transform duration-300">
                     {c.letter}
@@ -273,7 +249,7 @@ export function LandingPage() {
                     <p className="text-sm text-slate-500 dark:text-slate-400 max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-300">{c.desc}</p>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -282,16 +258,16 @@ export function LandingPage() {
       {/* VIDEO EDUKASI */}
       <section id="video" className="py-20 px-4 sm:px-6 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8 animate-slide-up">
+          <Reveal className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-3xl font-extrabold mb-1">Video Edukasi Terbaru</h2>
               <p className="text-slate-500 dark:text-slate-400">Tonton materi kesehatan yang mudah dipahami.</p>
             </div>
             <Link to="/video" className="btn-outline text-sm py-2 shrink-0">Lihat Semua <ArrowRight className="w-4 h-4" /></Link>
-          </div>
+          </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {recentVideos.map((v, i) => (
-              <Link key={v.id} to={`/video/${v.id}`} className="card overflow-hidden card-hover group animate-slide-up" style={{ animationDelay: `${i * 80}ms` }}>
+              <Reveal key={v.id} delay={i * 80} className="card overflow-hidden card-hover group">
                 <div className="relative aspect-video bg-slate-100 dark:bg-slate-800">
                   <img src={v.thumbnail_url} alt={v.title} className="w-full h-full object-cover" loading="lazy" />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -305,7 +281,7 @@ export function LandingPage() {
                   <span className="badge bg-accent-50 text-accent-700 dark:bg-accent-500/10 dark:text-accent-300 mb-2">{v.category}</span>
                   <h3 className="font-bold text-sm group-hover:text-brand-600 transition-colors line-clamp-2">{v.title}</h3>
                 </div>
-              </Link>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -326,7 +302,8 @@ export function LandingPage() {
 
       {/* TENTANG */}
       <section id="tentang" className="py-20 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto card p-8 sm:p-12 text-center animate-slide-up">
+        <div className="max-w-5xl mx-auto">
+        <Reveal className="card p-8 sm:p-12 text-center">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center mx-auto mb-5 shadow-lg">
             <Building2 className="w-8 h-8 text-white" />
           </div>
@@ -335,13 +312,14 @@ export function LandingPage() {
             Puskesmas Ambacang berkomitmen meningkatkan kesehatan masyarakat melalui inovasi digital. BERAKSIKU hadir sebagai platform edukasi terpadu untuk membantu masyarakat mengenali, mencegah, dan mengendalikan hipertensi secara mandiri dan terukur.
           </p>
           <Link to="/kontak" className="btn-primary">Tentang Kami <ArrowRight className="w-4 h-4" /></Link>
+        </Reveal>
         </div>
       </section>
 
       {/* KONTAK + MAPS */}
       <section className="py-20 px-4 sm:px-6 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8">
-          <div className="animate-slide-up">
+          <Reveal>
             <h2 className="text-3xl font-extrabold mb-6">Hubungi Kami</h2>
             <div className="space-y-4">
               <div className="card p-5 flex items-start gap-4 card-hover">
@@ -372,8 +350,8 @@ export function LandingPage() {
                 </div>
               </a>
             </div>
-          </div>
-          <div className="animate-slide-up">
+          </Reveal>
+          <Reveal>
             <div className="card overflow-hidden h-full min-h-[400px]">
               <iframe
                 title="Lokasi Puskesmas Ambacang"
@@ -383,17 +361,17 @@ export function LandingPage() {
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* FAQ */}
       <section id="faq" className="py-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-10 animate-slide-up">
+          <Reveal className="text-center mb-10">
             <h2 className="text-3xl font-extrabold mb-3">Pertanyaan Umum</h2>
             <p className="text-slate-500 dark:text-slate-400">Jawaban untuk pertanyaan yang sering ditanyakan.</p>
-          </div>
+          </Reveal>
           <div className="space-y-3">
             {faqs.map((f, i) => (
               <div key={i} className="card overflow-hidden animate-fade-in">
@@ -417,14 +395,14 @@ export function LandingPage() {
 
       {/* CTA */}
       <section className="py-16 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-brand-600 to-accent-700 p-8 sm:p-12 text-center text-white shadow-xl shadow-brand-600/20 animate-slide-up">
+        <Reveal className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-brand-600 to-accent-700 p-8 sm:p-12 text-center text-white shadow-xl shadow-brand-600/20">
           <h2 className="text-3xl font-extrabold mb-3">Siap Mulai Perjalanan Sehatmu?</h2>
           <p className="text-white/85 mb-6 max-w-xl mx-auto">Bergabung dengan ribuan masyarakat yang telah mengendalikan hipertensi bersama BERAKSIKU.</p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link to="/daftar" className="btn bg-white text-brand-700 hover:bg-slate-100 px-6 py-3 text-base font-semibold">Daftar Sekarang <ArrowRight className="w-5 h-5" /></Link>
             <Link to="/skrining" className="btn bg-white/15 text-white hover:bg-white/25 px-6 py-3 text-base font-semibold">Mulai Skrining</Link>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* FOOTER */}
@@ -480,7 +458,7 @@ export function LandingPage() {
 
 function HeroIllustration() {
   return (
-    <div className="relative w-full max-w-md mx-auto">
+    <div className="relative w-full max-w-md mx-auto animate-float">
       <div className="absolute inset-0 bg-gradient-to-br from-brand-200/40 to-accent-200/40 dark:from-brand-500/10 dark:to-accent-500/10 rounded-[3rem] blur-2xl" />
       <div className="relative card p-8 rounded-[2.5rem]">
         <svg viewBox="0 0 400 400" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">

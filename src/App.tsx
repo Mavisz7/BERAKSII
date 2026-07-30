@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { UserProvider, useUser } from '@/contexts/UserContext';
 import { AdminProvider, useAdmin } from '@/contexts/AdminContext';
 import { ToastHost } from '@/components/ui/Toast';
+import { SplashScreen } from '@/components/ui/SplashScreen';
+import { PageTransition } from '@/components/ui/PageTransition';
 import { UserLayout } from '@/components/layout/UserLayout';
 import { AdminLayout } from '@/components/layout/AdminLayout';
 
@@ -53,45 +55,56 @@ function UserRoute({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
   return (
     <ThemeProvider>
       <UserProvider>
         <AdminProvider>
           <BrowserRouter>
+            {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
             <ToastHost />
-            <Routes>
-              {/* User routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/dashboard" element={<UserRoute><RequireUser><DashboardPage /></RequireUser></UserRoute>} />
-              <Route path="/skrining" element={<UserRoute><ScreeningPage /></UserRoute>} />
-              <Route path="/edukasi" element={<UserRoute><EducationPage /></UserRoute>} />
-              <Route path="/video" element={<UserRoute><VideoGalleryPage /></UserRoute>} />
-              <Route path="/video/:id" element={<UserRoute><VideoDetailPage /></UserRoute>} />
-              <Route path="/quiz" element={<UserRoute><QuizPage /></UserRoute>} />
-              <Route path="/riwayat-quiz" element={<UserRoute><RequireUser><QuizHistoryPage /></RequireUser></UserRoute>} />
-              <Route path="/monitoring" element={<UserRoute><RequireUser><MonitoringPage /></RequireUser></UserRoute>} />
-              <Route path="/riwayat" element={<UserRoute><RequireUser><HistoryPage /></RequireUser></UserRoute>} />
-              <Route path="/grafik" element={<UserRoute><RequireUser><ChartsPage /></RequireUser></UserRoute>} />
-              <Route path="/kontak" element={<UserRoute><ContactPage /></UserRoute>} />
-              <Route path="/daftar" element={<UserRoute><RegisterPage /></UserRoute>} />
-              <Route path="/masuk" element={<UserRoute><LoginPage /></UserRoute>} />
-
-              {/* Admin routes */}
-              <Route path="/admin" element={<AdminLoginPage />} />
-              <Route path="/admin/dashboard" element={<RequireAdmin><AdminLayout><AdminDashboardPage /></AdminLayout></RequireAdmin>} />
-              <Route path="/admin/pengguna" element={<RequireAdmin><AdminLayout><AdminUsersPage /></AdminLayout></RequireAdmin>} />
-              <Route path="/admin/pemeriksaan" element={<RequireAdmin><AdminLayout><AdminExamsPage /></AdminLayout></RequireAdmin>} />
-              <Route path="/admin/laporan" element={<RequireAdmin><AdminLayout><AdminReportsPage /></AdminLayout></RequireAdmin>} />
-              <Route path="/admin/edukasi" element={<RequireAdmin><AdminLayout><AdminArticlesPage /></AdminLayout></RequireAdmin>} />
-              <Route path="/admin/video" element={<RequireAdmin><AdminLayout><AdminVideosPage /></AdminLayout></RequireAdmin>} />
-              <Route path="/admin/quiz" element={<RequireAdmin><AdminLayout><AdminQuizPage /></AdminLayout></RequireAdmin>} />
-              <Route path="/admin/pengaturan" element={<RequireAdmin><AdminLayout><AdminSettingsPage /></AdminLayout></RequireAdmin>} />
-
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <AnimatedRoutes />
           </BrowserRouter>
         </AdminProvider>
       </UserProvider>
     </ThemeProvider>
+  );
+}
+
+function AnimatedRoutes() {
+  return (
+    <PageTransition>
+      <Routes>
+        {/* User routes */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<UserRoute><RequireUser><DashboardPage /></RequireUser></UserRoute>} />
+        <Route path="/skrining" element={<UserRoute><ScreeningPage /></UserRoute>} />
+        <Route path="/edukasi" element={<UserRoute><EducationPage /></UserRoute>} />
+        <Route path="/video" element={<UserRoute><VideoGalleryPage /></UserRoute>} />
+        <Route path="/video/:id" element={<UserRoute><VideoDetailPage /></UserRoute>} />
+        <Route path="/quiz" element={<UserRoute><QuizPage /></UserRoute>} />
+        <Route path="/riwayat-quiz" element={<UserRoute><RequireUser><QuizHistoryPage /></RequireUser></UserRoute>} />
+        <Route path="/monitoring" element={<UserRoute><RequireUser><MonitoringPage /></RequireUser></UserRoute>} />
+        <Route path="/riwayat" element={<UserRoute><RequireUser><HistoryPage /></RequireUser></UserRoute>} />
+        <Route path="/grafik" element={<UserRoute><RequireUser><ChartsPage /></RequireUser></UserRoute>} />
+        <Route path="/kontak" element={<UserRoute><ContactPage /></UserRoute>} />
+        <Route path="/daftar" element={<UserRoute><RegisterPage /></UserRoute>} />
+        <Route path="/masuk" element={<UserRoute><LoginPage /></UserRoute>} />
+
+        {/* Admin routes */}
+        <Route path="/admin" element={<AdminLoginPage />} />
+        <Route path="/admin/dashboard" element={<RequireAdmin><AdminLayout><AdminDashboardPage /></AdminLayout></RequireAdmin>} />
+        <Route path="/admin/pengguna" element={<RequireAdmin><AdminLayout><AdminUsersPage /></AdminLayout></RequireAdmin>} />
+        <Route path="/admin/pemeriksaan" element={<RequireAdmin><AdminLayout><AdminExamsPage /></AdminLayout></RequireAdmin>} />
+        <Route path="/admin/laporan" element={<RequireAdmin><AdminLayout><AdminReportsPage /></AdminLayout></RequireAdmin>} />
+        <Route path="/admin/edukasi" element={<RequireAdmin><AdminLayout><AdminArticlesPage /></AdminLayout></RequireAdmin>} />
+        <Route path="/admin/video" element={<RequireAdmin><AdminLayout><AdminVideosPage /></AdminLayout></RequireAdmin>} />
+        <Route path="/admin/quiz" element={<RequireAdmin><AdminLayout><AdminQuizPage /></AdminLayout></RequireAdmin>} />
+        <Route path="/admin/pengaturan" element={<RequireAdmin><AdminLayout><AdminSettingsPage /></AdminLayout></RequireAdmin>} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </PageTransition>
   );
 }

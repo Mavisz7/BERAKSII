@@ -41,7 +41,7 @@ export function ToastHost() {
       {toasts.map((t) => {
         const Icon = icons[t.kind];
         return (
-          <div key={t.id} className={`flex items-start gap-3 rounded-xl border px-4 py-3 shadow-lg animate-scale-in ${styles[t.kind]}`}>
+          <div key={t.id} className={`flex items-start gap-3 rounded-xl border px-4 py-3 shadow-lg animate-slide-in-right ${styles[t.kind]}`}>
             <Icon className="w-5 h-5 mt-0.5 shrink-0" />
             <p className="text-sm font-medium flex-1">{t.message}</p>
             <button onClick={() => setToasts((arr) => arr.filter((x) => x.id !== t.id))} className="shrink-0 opacity-60 hover:opacity-100">

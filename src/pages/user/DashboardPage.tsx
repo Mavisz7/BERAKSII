@@ -460,7 +460,7 @@ export function DashboardPage() {
             {badges.map((b) => {
               const Icon = badgeIcons[b.icon] ?? Award;
               return (
-                <div key={b.key} className={`rounded-2xl p-3 text-center transition-all ${b.earned ? 'bg-gradient-to-br from-amber-50 to-brand-50 dark:from-amber-500/10 dark:to-brand-500/10 border border-amber-200 dark:border-amber-500/30' : 'bg-slate-50 dark:bg-slate-800/50 opacity-50'}`}>
+                <div key={b.key} className={`rounded-2xl p-3 text-center transition-all ${b.earned ? 'bg-gradient-to-br from-amber-50 to-brand-50 dark:from-amber-500/10 dark:to-brand-500/10 border border-amber-200 dark:border-amber-500/30 animate-pop' : 'bg-slate-50 dark:bg-slate-800/50 opacity-50'}`}>
                   <div className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${b.earned ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-600' : 'bg-slate-200 dark:bg-slate-700 text-slate-400'}`}>
                     <Icon className="w-6 h-6" />
                   </div>

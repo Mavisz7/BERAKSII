@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { UserProvider, useUser } from '@/contexts/UserContext';
 import { AdminProvider, useAdmin } from '@/contexts/AdminContext';
@@ -34,7 +34,9 @@ import { AdminArticlesPage } from '@/pages/admin/AdminArticlesPage';
 import { AdminVideosPage } from '@/pages/admin/AdminVideosPage';
 import { AdminQuizPage } from '@/pages/admin/AdminQuizPage';
 import { AdminSettingsPage } from '@/pages/admin/AdminSettingsPage';
+import { AccessDeniedPage } from '@/pages/AccessDeniedPage';
 
+/** Blocks unauthenticated users from protected user pages. */
 function RequireUser({ children }: { children: ReactNode }) {
   const { profile, loading } = useUser();
   const location = useLocation();
@@ -47,12 +49,34 @@ function RequireUser({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+/**
+ * Guards every /admin/* route.
+ * - While the session is being validated: show a full-screen spinner.
+ * - Not authenticated as admin: redirect to the admin login page.
+ * - A signed-in regular user who typed the URL manually: show 403 page.
+ */
 function RequireAdmin({ children }: { children: ReactNode }) {
-  const { isAdmin, mustChangePassword } = useAdmin();
+  const { isAdmin, loading: adminLoading } = useAdmin();
+  const { profile, loading: userLoading } = useUser();
   const location = useLocation();
-  if (!isAdmin) return <Navigate to="/admin" state={{ from: location }} replace />;
-  if (mustChangePassword && !location.pathname.startsWith('/admin')) return <Navigate to="/admin" replace />;
-  return <>{children}</>;
+
+  // Wait until BOTH contexts have resolved their persisted session
+  if (adminLoading || userLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <Spinner />
+      </div>
+    );
+  }
+
+  // Fully authenticated admin — allow through
+  if (isAdmin) return <>{children}</>;
+
+  // A regular logged-in user manually navigated to an admin URL
+  if (profile) return <AccessDeniedPage />;
+
+  // Not logged in at all — send to admin login, preserve intended destination
+  return <Navigate to="/admin" state={{ from: location }} replace />;
 }
 
 function UserRoute({ children }: { children: ReactNode }) {
@@ -81,7 +105,7 @@ function AnimatedRoutes() {
   return (
     <PageTransition>
       <Routes>
-        {/* User routes */}
+        {/* Public + user routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<UserRoute><RequireUser><DashboardPage /></RequireUser></UserRoute>} />
         <Route path="/skrining" element={<UserRoute><ScreeningPage /></UserRoute>} />
@@ -97,7 +121,7 @@ function AnimatedRoutes() {
         <Route path="/daftar" element={<UserRoute><RegisterPage /></UserRoute>} />
         <Route path="/masuk" element={<UserRoute><LoginPage /></UserRoute>} />
 
-        {/* Admin routes */}
+        {/* Admin routes — ALL protected by RequireAdmin */}
         <Route path="/admin" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<RequireAdmin><AdminLayout><AdminDashboardPage /></AdminLayout></RequireAdmin>} />
         <Route path="/admin/pengguna" element={<RequireAdmin><AdminLayout><AdminUsersPage /></AdminLayout></RequireAdmin>} />

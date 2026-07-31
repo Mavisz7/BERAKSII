@@ -4,6 +4,7 @@ import { audit } from '@/lib/audit';
 
 interface AdminCtx {
   isAdmin: boolean;
+  loading: boolean;
   mustChangePassword: boolean;
   login: (u: string, p: string) => Promise<{ ok: boolean; error?: string }>;
   changePassword: (p: string) => Promise<{ ok: boolean; error?: string }>;
@@ -15,20 +16,33 @@ const LS_KEY = 'beraksiku_admin';
 
 export function AdminProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [mustChangePassword, setMustChange] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem(LS_KEY);
-    if (saved === '1') setIsAdmin(true);
     (async () => {
-      if (isSupabaseConfigured) {
-        const { data } = await supabase
-          .from('admin_credentials')
-          .select('*')
-          .eq('id', 1)
-          .maybeSingle();
-        if (data) setMustChange(Boolean((data as { must_change_password: boolean }).must_change_password));
+      const saved = localStorage.getItem(LS_KEY);
+      if (saved === '1') {
+        if (isSupabaseConfigured) {
+          // Re-validate against DB: ensure admin_credentials still exists
+          const { data } = await supabase
+            .from('admin_credentials')
+            .select('must_change_password')
+            .eq('id', 1)
+            .maybeSingle();
+          if (data) {
+            setIsAdmin(true);
+            setMustChange(Boolean((data as { must_change_password: boolean }).must_change_password));
+          } else {
+            // Credentials removed/invalid — clear stale session
+            localStorage.removeItem(LS_KEY);
+          }
+        } else {
+          // Offline mode: trust localStorage
+          setIsAdmin(true);
+        }
       }
+      setLoading(false);
     })();
   }, []);
 
@@ -79,7 +93,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <Ctx.Provider value={{ isAdmin, mustChangePassword, login, changePassword, logout }}>
+    <Ctx.Provider value={{ isAdmin, loading, mustChangePassword, login, changePassword, logout }}>
       {children}
     </Ctx.Provider>
   );

@@ -79,7 +79,7 @@ export function AdminLoginPage() {
               <button type="submit" disabled={loading} className="btn-primary w-full py-3">
                 {loading ? 'Memproses...' : <>Masuk <LogIn className="w-4 h-4" /></>}
               </button>
-              <p className="text-xs text-center text-slate-400">Akun bawaan: admin / admin123</p>
+
             </form>
           )}
         </div>

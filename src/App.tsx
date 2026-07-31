@@ -6,6 +6,7 @@ import { AdminProvider, useAdmin } from '@/contexts/AdminContext';
 import { ToastHost } from '@/components/ui/Toast';
 import { SplashScreen } from '@/components/ui/SplashScreen';
 import { PageTransition } from '@/components/ui/PageTransition';
+import { Spinner } from '@/components/ui/Spinner';
 import { UserLayout } from '@/components/layout/UserLayout';
 import { AdminLayout } from '@/components/layout/AdminLayout';
 
@@ -37,8 +38,12 @@ import { AdminSettingsPage } from '@/pages/admin/AdminSettingsPage';
 function RequireUser({ children }: { children: ReactNode }) {
   const { profile, loading } = useUser();
   const location = useLocation();
-  if (loading) return null;
-  if (!profile) return <Navigate to="/daftar" state={{ from: location }} replace />;
+  if (loading) return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <Spinner />
+    </div>
+  );
+  if (!profile) return <Navigate to="/masuk" state={{ from: location }} replace />;
   return <>{children}</>;
 }
 
@@ -46,7 +51,7 @@ function RequireAdmin({ children }: { children: ReactNode }) {
   const { isAdmin, mustChangePassword } = useAdmin();
   const location = useLocation();
   if (!isAdmin) return <Navigate to="/admin" state={{ from: location }} replace />;
-  if (mustChangePassword && location.pathname !== '/admin') return <Navigate to="/admin" replace />;
+  if (mustChangePassword && !location.pathname.startsWith('/admin')) return <Navigate to="/admin" replace />;
   return <>{children}</>;
 }
 

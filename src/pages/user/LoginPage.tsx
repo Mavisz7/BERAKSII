@@ -7,7 +7,7 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import type { Profile } from '@/lib/types';
 
 export function LoginPage() {
-  const { register, update } = useUser();
+  const { login } = useUser();
   const navigate = useNavigate();
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,17 +22,17 @@ export function LoginPage() {
         if (!data) { toast('error', 'Pengguna tidak ditemukan. Silakan daftar terlebih dahulu.'); setLoading(false); return; }
         const p = data as Profile;
         if (p.disabled) { toast('error', 'Akun Anda dinonaktifkan. Hubungi Puskesmas.'); setLoading(false); return; }
-        localStorage.setItem('beraksiku_profile', JSON.stringify(p));
-        update({}); // trigger context
+        login(p);
         toast('success', `Selamat datang kembali, ${p.name}!`);
-        navigate('/');
+        navigate('/dashboard');
       } else {
         const saved = localStorage.getItem('beraksiku_profile');
         if (!saved) { toast('error', 'Belum ada pengguna. Silakan daftar terlebih dahulu.'); setLoading(false); return; }
         const p = JSON.parse(saved) as Profile;
         if (p.phone !== phone.trim()) { toast('error', 'Nomor HP tidak sesuai.'); setLoading(false); return; }
+        login(p);
         toast('success', `Selamat datang kembali, ${p.name}!`);
-        navigate('/');
+        navigate('/dashboard');
       }
     } catch (e) {
       toast('error', (e as Error).message);

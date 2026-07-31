@@ -24,7 +24,7 @@ export function RegisterPage() {
     try {
       await registerUser({ name: v.name.trim(), age: Number(v.age), sex: v.sex, phone: v.phone.trim() });
       toast('success', 'Pendaftaran berhasil. Selamat datang!');
-      navigate('/');
+      navigate('/dashboard');
     } catch (e) {
       toast('error', (e as Error).message);
     } finally {

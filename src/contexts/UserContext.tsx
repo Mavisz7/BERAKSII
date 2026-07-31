@@ -6,6 +6,7 @@ interface UserCtx {
   profile: Profile | null;
   loading: boolean;
   register: (p: Omit<Profile, 'id' | 'created_at' | 'disabled'>) => Promise<Profile>;
+  login: (p: Profile) => void;
   update: (p: Partial<Profile>) => Promise<void>;
   logout: () => void;
 }
@@ -64,13 +65,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setProfile(next);
   }
 
+  function login(p: Profile) {
+    localStorage.setItem(LS_KEY, JSON.stringify(p));
+    setProfile(p);
+  }
+
   function logout() {
     localStorage.removeItem(LS_KEY);
     setProfile(null);
   }
 
   return (
-    <Ctx.Provider value={{ profile, loading, register, update, logout }}>{children}</Ctx.Provider>
+    <Ctx.Provider value={{ profile, loading, register, login, update, logout }}>{children}</Ctx.Provider>
   );
 }
 

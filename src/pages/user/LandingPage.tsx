@@ -5,6 +5,7 @@ import {
   LineChart, BookOpen, History, User as UserIcon, ShieldCheck, ArrowRight,
   Play, Users, Stethoscope, ChevronDown, MapPin, Phone, Instagram, Sparkles,
   CheckCircle2, Menu, X, Sun, Moon, Building2,
+  Cigarette, Dumbbell, Apple, Wine, Stethoscope as StethoscopeIcon,
 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useSettings } from '@/hooks/useSettings';
@@ -32,13 +33,14 @@ const features = [
   { icon: ShieldCheck, title: 'Dashboard Admin', desc: 'Panel administrasi puskesmas.', to: '/admin' },
 ];
 
-const cerdik = [
-  { letter: 'C', title: 'Cek kesehatan secara rutin', desc: 'Periksa tekanan darah minimal sebulan sekali untuk deteksi dini.' },
-  { letter: 'E', title: 'Enyahkan asap rokok', desc: 'Hindari merokok dan paparan asap rokok bagi jantung sehat.' },
-  { letter: 'R', title: 'Rajin aktivitas fisik', desc: 'Aktivitas fisik sedang 30 menit/hari, 5 kali seminggu.' },
-  { letter: 'D', title: 'Diet sehat dengan kalori seimbang', desc: 'Konsumsi buah, sayur, dan batasi garam <5 gram/hari.' },
-  { letter: 'I', title: 'Istirahat cukup', desc: 'Tidur 7-8 jam per hari untuk pemulihan tubuh optimal.' },
-  { letter: 'K', title: 'Kelola stres', desc: 'Kelola stres dengan relaksasi, hobi, dan dukungan sosial.' },
+const beraksi = [
+  { letter: 'B', icon: Sparkles, title: 'Batasi konsumsi garam dan makanan tinggi lemak', desc: 'Batasi garam maksimal 1 sendok teh per hari dan kurangi makanan tinggi lemak.' },
+  { letter: 'E', icon: Cigarette, title: 'Enyahkan asap rokok', desc: 'Hindari rokok aktif maupun pasif untuk menjaga kesehatan jantung dan pembuluh darah.' },
+  { letter: 'R', icon: Dumbbell, title: 'Rajin aktivitas fisik', desc: 'Lakukan aktivitas fisik minimal 30 menit setiap hari.' },
+  { letter: 'A', icon: Apple, title: 'Atur pola makan sehat', desc: 'Perbanyak buah, sayur, protein sehat dan makanan bergizi seimbang.' },
+  { letter: 'K', icon: Brain, title: 'Kelola stres dengan baik', desc: 'Kelola stres melalui relaksasi, ibadah, tidur cukup dan aktivitas positif.' },
+  { letter: 'S', icon: Wine, title: 'Stop konsumsi alkohol', desc: 'Hindari minuman beralkohol untuk menjaga tekanan darah tetap stabil.' },
+  { letter: 'I', icon: StethoscopeIcon, title: 'Ikuti pemeriksaan tekanan darah secara rutin', desc: 'Periksa tekanan darah secara berkala di rumah maupun fasilitas kesehatan.' },
 ];
 
 const faqs = [
@@ -100,7 +102,7 @@ export function LandingPage() {
   const navLinks = [
     { href: '#keunggulan', label: 'Keunggulan' },
     { href: '#fitur', label: 'Fitur' },
-    { href: '#cerdik', label: 'CERDIK' },
+    { href: '#beraksi', label: 'BERAKSI' },
     { href: '#video', label: 'Video' },
     { href: '#tentang', label: 'Tentang' },
     { href: '#faq', label: 'FAQ' },
@@ -229,28 +231,34 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* CERDIK */}
-      <section id="cerdik" className="py-20 px-4 sm:px-6">
+      {/* BERAKSI */}
+      <section id="beraksi" className="py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <Reveal className="text-center mb-12">
             <span className="badge bg-accent-100 text-accent-700 dark:bg-accent-500/15 dark:text-accent-300 mb-3">Pola Hidup Sehat</span>
-            <h2 className="text-3xl font-extrabold mb-3">Program CERDIK</h2>
-            <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">Enam langkah sederhana untuk mencegah dan mengendalikan hipertensi.</p>
+            <h2 className="text-3xl font-extrabold mb-3">7 Prinsip BERAKSI</h2>
+            <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">Tujuh prinsip utama Program BERAKSI untuk membantu masyarakat mencegah dan mengendalikan hipertensi melalui perubahan gaya hidup sehat.</p>
           </Reveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {cerdik.map((c, i) => (
-              <Reveal key={i} delay={i * 70} className="card p-6 card-hover group">
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center text-2xl font-extrabold text-white shadow-lg shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    {c.letter}
+          <div className="grid sm:grid-cols-2 gap-5">
+            {beraksi.map((c, i) => {
+              const Icon = c.icon;
+              return (
+                <Reveal key={i} delay={i * 70} className="card p-6 card-hover group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center text-2xl font-extrabold text-white shadow-lg shrink-0 group-hover:scale-110 transition-transform duration-300">
+                      {c.letter}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Icon className="w-4 h-4 text-brand-500 shrink-0" />
+                        <h3 className="font-bold">{c.title}</h3>
+                      </div>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">{c.desc}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold mb-1">{c.title}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-300">{c.desc}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

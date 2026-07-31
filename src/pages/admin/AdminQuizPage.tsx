@@ -10,7 +10,7 @@ import type { QuizQuestion } from '@/lib/types';
 
 const categoryOptions = [
   'Pengertian', 'Faktor Risiko', 'Gejala', 'Komplikasi', 'Pencegahan',
-  'CERDIK', 'Pemeriksaan Tekanan Darah', 'Pengobatan', 'Pola Hidup Sehat', 'Mitos & Fakta', 'Umum',
+  'BERAKSI', 'Pemeriksaan Tekanan Darah', 'Pengobatan', 'Pola Hidup Sehat', 'Mitos & Fakta', 'Umum',
 ];
 
 const categoryColor: Record<string, string> = {
@@ -19,7 +19,7 @@ const categoryColor: Record<string, string> = {
   'Gejala': 'bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300',
   'Komplikasi': 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300',
   'Pencegahan': 'bg-leaf-100 text-leaf-700 dark:bg-leaf-500/15 dark:text-leaf-300',
-  'CERDIK': 'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',
+  'BERAKSI': 'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',
   'Pemeriksaan Tekanan Darah': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300',
   'Pengobatan': 'bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300',
   'Pola Hidup Sehat': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',

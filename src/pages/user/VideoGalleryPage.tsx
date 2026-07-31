@@ -8,13 +8,13 @@ import type { EduVideo, VideoCategory } from '@/lib/types';
 import { formatDate } from '@/lib/format';
 
 const categories: (VideoCategory | 'Semua')[] = [
-  'Semua', 'Hipertensi', 'Pola Hidup Sehat', 'CERDIK', 'Aktivitas Fisik', 'Gizi Seimbang', 'Pemeriksaan Tekanan Darah',
+  'Semua', 'Hipertensi', 'Pola Hidup Sehat', 'BERAKSI', 'Aktivitas Fisik', 'Gizi Seimbang', 'Pemeriksaan Tekanan Darah',
 ];
 
 const categoryColor: Record<string, string> = {
   'Hipertensi': 'bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300',
   'Pola Hidup Sehat': 'bg-leaf-100 text-leaf-700 dark:bg-leaf-500/15 dark:text-leaf-300',
-  'CERDIK': 'bg-brand-100 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300',
+  'BERAKSI': 'bg-brand-100 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300',
   'Aktivitas Fisik': 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
   'Gizi Seimbang': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300',
   'Pemeriksaan Tekanan Darah': 'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',

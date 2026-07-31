@@ -88,7 +88,7 @@ export interface AuditLog {
 export type VideoCategory =
   | 'Hipertensi'
   | 'Pola Hidup Sehat'
-  | 'CERDIK'
+  | 'BERAKSI'
   | 'Aktivitas Fisik'
   | 'Gizi Seimbang'
   | 'Pemeriksaan Tekanan Darah';
@@ -113,7 +113,7 @@ export type QuizCategory =
   | 'Gejala'
   | 'Komplikasi'
   | 'Pencegahan'
-  | 'CERDIK'
+  | 'BERAKSI'
   | 'Pemeriksaan Tekanan Darah'
   | 'Pengobatan'
   | 'Pola Hidup Sehat'
